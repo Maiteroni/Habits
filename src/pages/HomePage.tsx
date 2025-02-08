@@ -13,8 +13,13 @@ const HomePage: React.FC = () => {
     return savedHabits ? JSON.parse(savedHabits) : [];
   });
 
+  
+  const [allCompleted, setAllCompleted] = useState<boolean>(false);
+
   useEffect(() => {
     localStorage.setItem('habits', JSON.stringify(habits));
+
+    setAllCompleted(habits.length > 0 && habits.every((habit) => habit.completed));
   }, [habits]);
 
   const addHabit = (title: string) => {
@@ -39,7 +44,13 @@ const HomePage: React.FC = () => {
   };
 
   const completeAllHabits = () => {
-    setHabits(habits.map((habit) => ({ ...habit, completed: true })));
+    if (allCompleted) {
+
+      setHabits(habits.map((habit) => ({ ...habit, completed: false })));
+    } else {
+
+      setHabits(habits.map((habit) => ({ ...habit, completed: true })));
+    }
   };
 
   const deleteAllHabits = () => {
@@ -48,14 +59,16 @@ const HomePage: React.FC = () => {
 
   return (
     <div className={styles.homePage}>
-      <title>Трекер привычек</title>
       <h1>Трекер привычек</h1>
       <HabitForm onAdd={addHabit} />
-      {habits.length >= 2 && (
-      <div className={styles.buttons}>
-        <CompleteAllButton onClick={completeAllHabits} />
-        <DeleteAllButton onClick={deleteAllHabits} />
-      </div>
+      {habits.length > 2 && (
+        <div className={styles.buttons}>
+          <CompleteAllButton
+            onClick={completeAllHabits}
+            allCompleted={allCompleted}
+          />
+          <DeleteAllButton onClick={deleteAllHabits} />
+        </div>
       )}
       <HabitList habits={habits} onToggle={toggleHabit} onDelete={deleteHabit} />
       <ProgressChart habits={habits} />
