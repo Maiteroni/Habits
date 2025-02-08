@@ -1,0 +1,23 @@
+.progressChart {
+    margin-top: 20px;
+  
+    .chart {
+      width: 100%;
+      height: 20px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+  
+      .progressBar {
+        height: 100%;
+        background-color: #28a745;
+        transition: width 0.3s ease;
+      }
+    }
+  
+    p {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+  }
